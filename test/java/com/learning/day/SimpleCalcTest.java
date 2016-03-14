@@ -3,11 +3,11 @@ package com.learning.day;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class MainClassTest {
+public class SimpleCalcTest {
 
     @Test
     public void createClassPasses() throws Exception {
-        MainClass mainObject = new MainClass();
+        SimpleCalc calculator = new SimpleCalc();
         Assert.assertTrue(true);
     }
 }
