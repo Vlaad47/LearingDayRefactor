@@ -3,64 +3,74 @@ package com.learning.day;
 import java.util.Scanner;
 
 public class SimpleCalc {
+
     public static void main(String args[]) {
-        int fnum,snum,anum = 0;
-        String strtype;
-        char[] testchar;
+        new SimpleCalc().runCalculations(new Scanner(System.in));
+    }
+
+    private int machinecode = 0;
+    private int operatorIndex = 0;
+
+    public double runCalculations(Scanner inScanner) {
+        int firstNumber, secondNumber,result = 0;
         char currentchar;
-        int machinecode = 0;
         String tempnumstr;
-        int operatorloc = 0;
         char[] tempnum = new char[256];
-        Scanner scan = new Scanner(System.in);
-        System.out.println("Enter The Calculation: ");
-        strtype = scan.nextLine();
-        testchar = strtype.toCharArray();
-        for(int b = 0; b < testchar.length; b++)
-        {
-            currentchar = testchar[b];
-            if(currentchar == '+') {
-                machinecode = 1;
-                operatorloc = b;
-            }
-            else if(currentchar == '-') {
-                machinecode = 2;
-                operatorloc = b;
-            }
-            else if(currentchar == '*') {
-                machinecode = 3;
-                operatorloc = b;
-            }
-            else if(currentchar == '/') {
-                machinecode = 4;
-                operatorloc = b;
-            }
-        }
-        for(int t = 0;t < operatorloc;t++) {
+        String strtype = inScanner.nextLine();
+        char[] testchar = strtype.toCharArray();
+        parseOperator(testchar);
+        for(int t = 0; t < operatorIndex; t++) {
             tempnum[t] = testchar[t];
         }
         tempnumstr = new String(tempnum).trim();
-        fnum = Integer.parseInt(tempnumstr);
-        for(int temp = operatorloc;temp < testchar.length;temp++) {
-            for(int t = 0;t<(testchar.length-operatorloc-1);t++) {
+        firstNumber = Integer.parseInt(tempnumstr);
+        for(int temp = operatorIndex; temp < testchar.length; temp++) {
+            for(int t = 0; t<(testchar.length-operatorIndex-1); t++) {
                 tempnum[t] = testchar[temp];
             }
         }
         tempnumstr = new String(tempnum).trim();
-        snum = Integer.parseInt(tempnumstr);
+        secondNumber = Integer.parseInt(tempnumstr);
+        result = getAnum(firstNumber, secondNumber);
+        System.out.println(result);
+        return result;
+    }
+
+    private int getAnum(int firstNumber, int snum) {
         switch(machinecode) {
             case 1:
-                anum = fnum + snum;
-                break;
+                return firstNumber + snum;
             case 2:
-                anum = fnum - snum;
-                break;
+                return firstNumber - snum;
             case 3:
-                anum = fnum * snum;
-                break;
+                return firstNumber * snum;
             case 4:
-                anum = fnum / snum;
+                return firstNumber / snum;
+            default:
+                throw new UnknownOperationException();
         }
-        System.out.println(anum);
+    }
+
+    private void parseOperator(char[] testchar) {
+        char currentchar;
+        for(int b = 0; b < testchar.length; b++) {
+            currentchar = testchar[b];
+            if(currentchar == '+') {
+                machinecode = 1;
+                operatorIndex = b;
+            }
+            else if(currentchar == '-') {
+                machinecode = 2;
+                operatorIndex = b;
+            }
+            else if(currentchar == '*') {
+                machinecode = 3;
+                operatorIndex = b;
+            }
+            else if(currentchar == '/') {
+                machinecode = 4;
+                operatorIndex = b;
+            }
+        }
     }
 }
